@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Barabisey Community App</string>
+    <string name="app_tag_line">Stay connected with your community</string>
+    <string name="add_to_calendar">Add to calendar</string>
+    <string name="home">Home</string>
+    <string name="reminders">Reminders</string>
+    <string name="settings">Settings</string>
+    <string name="share">Share</string>
+    <string name="no_reminders">No reminders yet. Tap '+' to add a new one.</string>
+    <string name="theme">Theme</string>
+    <string name="language">Language</string>
+</resources>

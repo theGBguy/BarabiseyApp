@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">बराबिसे समुदाय एप</string>
+    <string name="app_tag_line">तपाईँको समुदायसँग जोडिनुहोस्</string>
+    <string name="add_to_calendar">क्यालेन्डरमा थप्नुहोस्</string>
+    <string name="home">गृहपृष्ठ</string>
+    <string name="reminders">स्मरण</string>
+    <string name="settings">सेटिङ</string>
+    <string name="share">साझा गर्नुहोस्</string>
+    <string name="no_reminders">अहिलेसम्म कुनै स्मरण छैन। नयाँ थप्न ‘+’ थिच्नुहोस्।</string>
+    <string name="theme">थीम</string>
+    <string name="language">भाषा</string>
+
+</resources>
