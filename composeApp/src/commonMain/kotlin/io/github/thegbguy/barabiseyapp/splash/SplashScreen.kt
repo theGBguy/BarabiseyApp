@@ -26,16 +26,16 @@ import androidx.compose.ui.unit.sp
 import barabiseyapp.composeapp.generated.resources.Res
 import barabiseyapp.composeapp.generated.resources.app_name
 import barabiseyapp.composeapp.generated.resources.app_tag_line
-import barabiseyapp.composeapp.generated.resources.ic_cyclone
+import barabiseyapp.composeapp.generated.resources.ic_app_icon
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun SplashScreen(onNavigateToHome: () -> Unit) {
+fun SplashScreen(onNavigateToLogin: () -> Unit) {
     LaunchedEffect(Unit) {
-        delay(3000)
-        onNavigateToHome()
+        delay(1000)
+        onNavigateToLogin()
     }
 
     Box(
@@ -51,7 +51,7 @@ fun SplashScreen(onNavigateToHome: () -> Unit) {
         ) {
             // App Logo
             Image(
-                painter = painterResource(Res.drawable.ic_cyclone),
+                painter = painterResource(Res.drawable.ic_app_icon),
                 contentDescription = "App Logo",
                 modifier = Modifier.size(120.dp)
             )
@@ -70,11 +70,6 @@ fun SplashScreen(onNavigateToHome: () -> Unit) {
                 fontSize = 16.sp,
                 color = Color.Gray
             )
-
-            Spacer(modifier = Modifier.height(40.dp))
-
-            // Loading Indicator
-            CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
         }
     }
 }

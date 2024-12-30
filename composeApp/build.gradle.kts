@@ -9,6 +9,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.buildConfig)
+    alias(libs.plugins.google.services)
+//    alias(libs.plugins.crashlytics)
 }
 
 kotlin {
@@ -52,6 +54,11 @@ kotlin {
             implementation(libs.coil)
             implementation(libs.coil.network.ktor)
             implementation(libs.multiplatformSettings)
+//            implementation(libs.firebase.firestore)
+//            implementation(libs.firebase.crashlytics)
+            implementation(libs.kmpauth.google)
+            implementation(libs.kmpauth.firebase)
+            implementation(libs.kmpauth.uihelper)
         }
 
         commonTest.dependencies {
@@ -80,7 +87,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 24
         targetSdk = 35
 
         applicationId = "io.github.thegbguy.barabiseyapp.androidApp"

@@ -10,6 +10,7 @@ import androidx.navigation.toRoute
 import io.github.thegbguy.barabiseyapp.event.Event
 import io.github.thegbguy.barabiseyapp.event.EventDetailsScreen
 import io.github.thegbguy.barabiseyapp.home.HomeScreen
+import io.github.thegbguy.barabiseyapp.login.LoginScreen
 import io.github.thegbguy.barabiseyapp.reminders.RemindersScreen
 import io.github.thegbguy.barabiseyapp.settings.SettingsScreen
 import io.github.thegbguy.barabiseyapp.splash.SplashScreen
@@ -20,6 +21,9 @@ import kotlin.reflect.typeOf
 
 @Serializable
 data object Splash
+
+@Serializable
+data object Login
 
 @Serializable
 data object Home
@@ -54,6 +58,11 @@ internal fun BarabiseyCommunityApp() {
         ) {
             composable<Splash> {
                 SplashScreen {
+                    navController.navigate(Login)
+                }
+            }
+            composable<Login> {
+                LoginScreen {
                     navController.navigate(Home)
                 }
             }
