@@ -54,11 +54,13 @@ kotlin {
             implementation(libs.coil)
             implementation(libs.coil.network.ktor)
             implementation(libs.multiplatformSettings)
-//            implementation(libs.firebase.firestore)
+            implementation(libs.firebase.firestore)
 //            implementation(libs.firebase.crashlytics)
             implementation(libs.kmpauth.google)
             implementation(libs.kmpauth.firebase)
             implementation(libs.kmpauth.uihelper)
+            implementation(libs.nepali.date.picker)
+            implementation(libs.kotlinx.datetime)
         }
 
         commonTest.dependencies {

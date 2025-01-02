@@ -2,6 +2,7 @@ package io.github.thegbguy.barabiseyapp.utils
 
 import androidx.core.bundle.Bundle
 import androidx.navigation.NavType
+import io.ktor.http.encodeURLPath
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
@@ -14,7 +15,8 @@ inline fun <reified T : Any> serializableType(
 
     override fun parseValue(value: String): T = json.decodeFromString(value)
 
-    override fun serializeAsValue(value: T): String = json.encodeToString(value)
+    override fun serializeAsValue(value: T): String =
+        json.encodeToString(value).encodeURLPath(encodeSlash = true, encodeEncoded = false)
 
     override fun put(bundle: Bundle, key: String, value: T) {
         bundle.putString(key, json.encodeToString(value))

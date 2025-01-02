@@ -1,5 +1,6 @@
 package io.github.thegbguy.barabiseyapp.home
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,27 +18,41 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import barabiseyapp.composeapp.generated.resources.Res
 import barabiseyapp.composeapp.generated.resources.app_name
 import barabiseyapp.composeapp.generated.resources.home
 import barabiseyapp.composeapp.generated.resources.reminders
 import barabiseyapp.composeapp.generated.resources.settings
 import io.github.thegbguy.barabiseyapp.event.Event
+import io.github.thegbguy.barabiseyapp.firebase.getEvents
+import io.github.thegbguy.barabiseyapp.utils.getFormattedNepaliDate
+import io.github.thegbguy.barabiseyapp.utils.getFormattedTime
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -46,6 +61,8 @@ fun HomeScreen(
     onRemindersClick: () -> Unit,
     onSettingsClick: () -> Unit
 ) {
+    val events by getEvents().collectAsStateWithLifecycle(emptyList())
+
     Scaffold(
         topBar = { HomeTopBar() },
         floatingActionButton = {
@@ -66,6 +83,7 @@ fun HomeScreen(
     ) { paddingValues ->
         HomeContent(
             modifier = Modifier.padding(paddingValues),
+            events = events,
             onEventClick = onEventClick
         )
     }
@@ -93,13 +111,23 @@ fun HomeTopBar() {
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeContent(modifier: Modifier = Modifier, onEventClick: (Event) -> Unit) {
+fun HomeContent(
+    events: List<Event>,
+    onEventClick: (Event) -> Unit,
+    modifier: Modifier = Modifier
+) {
+
     LazyColumn(
         modifier = modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        items(eventList, key = { it.time }) { event ->
+        stickyHeader {
+            NepaliDateCard()
+        }
+
+        items(events, key = { it.title }) { event ->
             EventCard(
                 title = event.title,
                 description = event.description,
@@ -160,33 +188,46 @@ fun BottomNavigation(
     }
 }
 
-internal val eventList = listOf(
-    Event(
-        title = "Event 1",
-        description = "Description for Event 1",
-        date = "2023-09-15",
-        time = "10:00 AM",
-        location = "Location 1"
-    ),
-    Event(
-        title = "Event 2",
-        description = "Description for Event 2",
-        date = "2023-09-16",
-        time = "2:30 PM",
-        location = "Location 2"
-    ),
-    Event(
-        title = "Event 3",
-        description = "Description for Event 3",
-        date = "2023-09-17",
-        time = "9:45 AM",
-        location = "Location 3"
-    ),
-    Event(
-        title = "Event 4",
-        description = "Description for Event 4",
-        date = "2023-09-18",
-        time = "11:15 AM",
-        location = "Location 4"
-    )
-)
+@Composable
+fun NepaliDateCard() {
+    val currentDate = getFormattedNepaliDate()
+    var currentTime by remember {
+        mutableStateOf(getFormattedTime())
+    }
+
+    LaunchedEffect(Unit) {
+        while (isActive) {
+            delay(1000L)
+            currentTime = getFormattedTime()
+        }
+    }
+
+    Card(
+        shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
+        elevation = CardDefaults.cardElevation(4.dp),
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = currentDate,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Text(
+                text = currentTime,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            )
+        }
+    }
+}

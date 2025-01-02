@@ -9,4 +9,14 @@ data class Event(
     val date: String,
     val time: String,
     val location: String,
-)
+    val image: String,
+) {
+    fun asShareableString() = buildString {
+        appendLine("Title: $title")
+        appendLine("Description: $description")
+        appendLine("Date: $date")
+        appendLine("Time: $time")
+        appendLine("Location: $location")
+        appendLine("Image: $image")
+    }
+}

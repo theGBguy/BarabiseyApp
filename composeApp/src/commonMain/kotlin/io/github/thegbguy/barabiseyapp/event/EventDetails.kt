@@ -1,6 +1,6 @@
 package io.github.thegbguy.barabiseyapp.event
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,6 +20,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,6 +32,10 @@ import androidx.compose.ui.unit.sp
 import barabiseyapp.composeapp.generated.resources.Res
 import barabiseyapp.composeapp.generated.resources.add_to_calendar
 import barabiseyapp.composeapp.generated.resources.share
+import coil3.ImageLoader
+import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
+import io.github.thegbguy.barabiseyapp.utils.share
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,6 +44,18 @@ fun EventDetailsScreen(
     event: Event,
     onBackPressed: () -> Unit
 ) {
+    val context = LocalPlatformContext.current
+    var showImageDialog by remember {
+        mutableStateOf(false)
+    }
+
+    if (showImageDialog) {
+        EventImageDialog(
+            image = event.image,
+            onDismiss = { showImageDialog = false }
+        )
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -65,14 +84,16 @@ fun EventDetailsScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Optional Banner Image
-            Image(
-                imageVector = Icons.Default.Info,
+            // Banner Image
+            AsyncImage(
+                model = event.image,
                 contentDescription = "Event Banner",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
+                    .height(300.dp)
                     .padding(bottom = 8.dp)
+                    .clickable { showImageDialog = true },
+                imageLoader = ImageLoader(context)
             )
 
             // Event Description
@@ -113,6 +134,21 @@ fun EventDetailsScreen(
                 )
             }
 
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = "Location:",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
+                )
+                Text(
+                    text = event.location,
+                    fontSize = 16.sp
+                )
+            }
+
             // Action Buttons
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -131,7 +167,7 @@ fun EventDetailsScreen(
 
                 Button(
                     onClick = {
-
+                        share(context, event.asShareableString())
                     },
                     modifier = Modifier.weight(1f),
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)

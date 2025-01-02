@@ -8,6 +8,7 @@ androidx-activityCompose = "1.9.3"
 androidx-uiTest = "1.7.6"
 kermit = "2.0.5"
 kotlinx-coroutines = "1.10.1"
+kotlinxDatetime = "0.6.1"
 ktor = "3.0.3"
 androidx-lifecycle = "2.8.4"
 androidx-navigation = "2.8.0-alpha10"
@@ -19,6 +20,7 @@ buildConfig = "5.4.0"
 gradlePlugins-crashlytics = "3.0.2"
 firebase = "2.1.0"
 google-services = "4.4.2"
+nepaliDatePicker = "1.0.2"
 
 [libraries]
 
@@ -33,6 +35,7 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
 ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktor" }
@@ -55,6 +58,7 @@ multiplatformSettings = { module = "com.russhwolf:multiplatform-settings", versi
 firebase-auth = { group = "dev.gitlive", name = "firebase-auth", version.ref = "firebase" }
 firebase-firestore = { group = "dev.gitlive", name = "firebase-firestore", version.ref = "firebase" }
 firebase-crashlytics = { group = "dev.gitlive", name = "firebase-crashlytics", version.ref = "firebase" }
+nepali-date-picker = { module = "io.github.thegbguy:nepali-date-picker", version.ref = "nepaliDatePicker" }
 
 [plugins]
 
