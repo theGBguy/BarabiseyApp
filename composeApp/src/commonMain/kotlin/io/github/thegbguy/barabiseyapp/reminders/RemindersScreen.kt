@@ -23,8 +23,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.toMutableStateList
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,10 +32,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import barabiseyapp.composeapp.generated.resources.Res
 import barabiseyapp.composeapp.generated.resources.no_reminders
 import barabiseyapp.composeapp.generated.resources.reminders
+import io.github.thegbguy.barabiseyapp.firebase.getReminders
 import io.github.thegbguy.barabiseyapp.home.BottomNavigation
+import io.github.thegbguy.barabiseyapp.utils.sendNotification
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,9 +47,14 @@ fun RemindersScreen(
     onHomeClick: () -> Unit,
     onSettingsClick: () -> Unit
 ) {
-    val reminders = remember {
-        reminders.toMutableStateList()
+    val reminders by getReminders().collectAsStateWithLifecycle(emptyList())
+
+    LaunchedEffect(reminders) {
+        if (reminders.isNotEmpty()) {
+            sendNotification()
+        }
     }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -80,7 +88,7 @@ fun RemindersScreen(
             reminders = reminders,
             modifier = Modifier.padding(paddingValues),
             onDeleteReminder = {
-                reminders.removeAt(it)
+//                reminders.removeAt(it)
             }
         )
     }
@@ -141,7 +149,10 @@ fun ReminderCard(reminder: Reminder, onDelete: () -> Unit) {
         ) {
             Column {
                 Text(text = reminder.title, fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                Text(text = reminder.time, fontSize = 14.sp, color = Color.Gray)
+                if (reminder.details != null) {
+                    Text(text = reminder.details, fontSize = 14.sp, color = Color.Gray)
+                }
+                Text(text = reminder.dateTime, fontSize = 14.sp, color = Color.Gray)
             }
             IconButton(onClick = onDelete) {
                 Icon(
@@ -153,26 +164,3 @@ fun ReminderCard(reminder: Reminder, onDelete: () -> Unit) {
         }
     }
 }
-
-internal val reminders = listOf(
-    Reminder(
-        id = "1",
-        title = "Reminder 1",
-        time = "10:00 AM"
-    ),
-    Reminder(
-        id = "2",
-        title = "Reminder 2",
-        time = "2:30 PM"
-    ),
-    Reminder(
-        id = "3",
-        title = "Reminder 3",
-        time = "9:45 AM"
-    ),
-    Reminder(
-        id = "4",
-        title = "Reminder 4",
-        time = "11:15 AM"
-    )
-)

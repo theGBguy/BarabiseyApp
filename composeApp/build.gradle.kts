@@ -29,6 +29,7 @@ kotlin {
         it.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            export("io.github.mirzemehdi:kmpnotifier:1.4.0")
         }
     }
 
@@ -59,6 +60,7 @@ kotlin {
             implementation(libs.kmpauth.google)
             implementation(libs.kmpauth.firebase)
             implementation(libs.kmpauth.uihelper)
+            api(libs.kmpnotifier)
             implementation(libs.nepali.date.picker)
             implementation(libs.kotlinx.datetime)
         }

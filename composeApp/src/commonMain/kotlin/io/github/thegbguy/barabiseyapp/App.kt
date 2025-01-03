@@ -107,9 +107,6 @@ internal fun BarabiseyCommunityApp() {
                     },
                     onHomeClick = {
                         navController.navigate(Home)
-                    },
-                    onBackPressed = {
-                        navController.navigateUp()
                     }
                 )
             }
