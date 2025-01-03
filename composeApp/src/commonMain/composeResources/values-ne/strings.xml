@@ -9,5 +9,6 @@
     <string name="no_reminders">अहिलेसम्म कुनै स्मरण छैन। नयाँ थप्न ‘+’ थिच्नुहोस्।</string>
     <string name="theme">थीम</string>
     <string name="language">भाषा</string>
+    <string name="enable_sabisa_notification">सा.बि.शा. सूचना सुचारु गर्नुहोस्</string>
 
 </resources>

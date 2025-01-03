@@ -38,7 +38,7 @@ import barabiseyapp.composeapp.generated.resources.no_reminders
 import barabiseyapp.composeapp.generated.resources.reminders
 import io.github.thegbguy.barabiseyapp.firebase.getReminders
 import io.github.thegbguy.barabiseyapp.home.BottomNavigation
-import io.github.thegbguy.barabiseyapp.utils.sendNotification
+import io.github.thegbguy.barabiseyapp.utils.scheduleNotification
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,7 +51,7 @@ fun RemindersScreen(
 
     LaunchedEffect(reminders) {
         if (reminders.isNotEmpty()) {
-            sendNotification()
+            scheduleNotification()
         }
     }
 

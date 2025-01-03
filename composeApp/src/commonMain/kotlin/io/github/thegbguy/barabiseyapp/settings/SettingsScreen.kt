@@ -21,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,15 +29,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import barabiseyapp.composeapp.generated.resources.Res
+import barabiseyapp.composeapp.generated.resources.enable_sabisa_notification
 import barabiseyapp.composeapp.generated.resources.language
 import barabiseyapp.composeapp.generated.resources.settings
 import barabiseyapp.composeapp.generated.resources.theme
+import com.mmk.kmpnotifier.notification.NotifierManager
 import io.github.thegbguy.barabiseyapp.home.BottomNavigation
 import io.github.thegbguy.barabiseyapp.theme.LocalThemeIsDark
 import io.github.thegbguy.barabiseyapp.utils.Language
 import io.github.thegbguy.barabiseyapp.utils.LocalLanguage
 import io.github.thegbguy.barabiseyapp.utils.changeLanguage
+import io.github.thegbguy.barabiseyapp.utils.isSabisaNotificationEnabled
 import io.github.thegbguy.barabiseyapp.utils.languageState
+import io.github.thegbguy.barabiseyapp.utils.setSabisaNotificationEnabled
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,6 +54,10 @@ fun SettingsScreen(
     onHomeClick: () -> Unit
 ) {
     var isDark by LocalThemeIsDark.current
+    var isSabisaNotificationEnabled by remember {
+        mutableStateOf(isSabisaNotificationEnabled())
+    }
+    val scope = rememberCoroutineScope()
 
     Scaffold(
         topBar = {
@@ -107,6 +119,33 @@ fun SettingsScreen(
                 )
                 LanguageDropdown(
                     modifier = Modifier.wrapContentWidth()
+                )
+            }
+
+            // Enable Sabisa Notification Toggle
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(Res.string.enable_sabisa_notification),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium
+                )
+                Switch(
+                    checked = isSabisaNotificationEnabled,
+                    onCheckedChange = {
+                        isSabisaNotificationEnabled = !isSabisaNotificationEnabled
+                        setSabisaNotificationEnabled(isSabisaNotificationEnabled)
+                        scope.launch(Dispatchers.IO) {
+                            if (isSabisaNotificationEnabled) {
+                                NotifierManager.getPushNotifier().subscribeToTopic("sabisa")
+                            } else {
+                                NotifierManager.getPushNotifier().unSubscribeFromTopic("sabisa")
+                            }
+                        }
+                    }
                 )
             }
         }
