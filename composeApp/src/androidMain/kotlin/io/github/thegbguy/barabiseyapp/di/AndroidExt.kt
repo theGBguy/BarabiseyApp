@@ -2,6 +2,7 @@ package io.github.thegbguy.barabiseyapp.di
 
 import android.app.Application
 import android.content.Context
+import io.github.thegbguy.barabiseyapp.db.DriverFactory
 import org.koin.core.KoinApplication
 import org.koin.core.annotation.KoinInternalApi
 import org.koin.core.component.KoinComponent
@@ -9,6 +10,12 @@ import org.koin.core.component.inject
 import org.koin.core.logger.Level
 import org.koin.dsl.bind
 import org.koin.dsl.module
+
+val androidDbModule = module {
+    single {
+        DriverFactory(get())
+    }
+}
 
 @OptIn(KoinInternalApi::class)
 fun KoinApplication.androidContext(androidContext: Context): KoinApplication {

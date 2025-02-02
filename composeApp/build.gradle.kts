@@ -11,6 +11,16 @@ plugins {
     alias(libs.plugins.buildConfig)
     alias(libs.plugins.google.services)
 //    alias(libs.plugins.crashlytics)
+    alias(libs.plugins.sqlDelight)
+}
+
+sqldelight {
+    databases {
+        create("AppDatabase") {
+            packageName = "io.github.thegbguy.barabiseyapp"
+        }
+    }
+    linkSqlite = true
 }
 
 kotlin {
@@ -52,6 +62,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
             implementation(libs.coil)
             implementation(libs.coil.network.ktor)
             implementation(libs.multiplatformSettings)
@@ -63,6 +74,8 @@ kotlin {
             api(libs.kmpnotifier)
             implementation(libs.nepali.date.picker)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.primitive.adapters)
+            implementation(libs.coroutines.extensions)
         }
 
         commonTest.dependencies {
@@ -78,10 +91,12 @@ kotlin {
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.ktor.client.okhttp)
             implementation(libs.androidx.work.runtime.ktx)
+            implementation(libs.android.driver)
         }
 
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+            implementation(libs.native.driver)
         }
 
     }

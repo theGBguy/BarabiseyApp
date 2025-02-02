@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -23,7 +24,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,10 +36,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import barabiseyapp.composeapp.generated.resources.Res
 import barabiseyapp.composeapp.generated.resources.no_reminders
 import barabiseyapp.composeapp.generated.resources.reminders
-import io.github.thegbguy.barabiseyapp.firebase.getReminders
 import io.github.thegbguy.barabiseyapp.home.BottomNavigation
-import io.github.thegbguy.barabiseyapp.utils.scheduleNotification
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,13 +46,8 @@ fun RemindersScreen(
     onHomeClick: () -> Unit,
     onSettingsClick: () -> Unit
 ) {
-    val reminders by getReminders().collectAsStateWithLifecycle(emptyList())
-
-    LaunchedEffect(reminders) {
-        if (reminders.isNotEmpty()) {
-            scheduleNotification()
-        }
-    }
+    val viewModel = koinInject<RemindersViewModel>()
+    val reminders by viewModel.reminders.collectAsStateWithLifecycle(emptyList())
 
     Scaffold(
         topBar = {
@@ -68,7 +62,7 @@ fun RemindersScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /* Add Reminder action */ }) {
+            FloatingActionButton(onClick = { viewModel.insertReminder() }) {
                 Icon(
                     imageVector = Icons.Default.Add,
                     contentDescription = "Add Reminder"
@@ -87,8 +81,8 @@ fun RemindersScreen(
         ReminderList(
             reminders = reminders,
             modifier = Modifier.padding(paddingValues),
-            onDeleteReminder = {
-//                reminders.removeAt(it)
+            onDeleteReminder = { reminderId ->
+                viewModel.deleteReminder(reminderId)
             }
         )
     }
@@ -98,7 +92,7 @@ fun RemindersScreen(
 fun ReminderList(
     reminders: List<Reminder>,
     modifier: Modifier = Modifier,
-    onDeleteReminder: (Int) -> Unit
+    onDeleteReminder: (Long) -> Unit
 ) {
     if (reminders.isEmpty()) {
         // Empty State
@@ -122,10 +116,10 @@ fun ReminderList(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(reminders.size) { index ->
+            items(reminders) { reminder ->
                 ReminderCard(
-                    reminder = reminders[index],
-                    onDelete = { onDeleteReminder(index) }
+                    reminder = reminder,
+                    onDelete = { reminder.id.toLongOrNull()?.let { onDeleteReminder(it) } }
                 )
             }
         }

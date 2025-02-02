@@ -1,6 +1,7 @@
 package io.github.thegbguy.barabiseyapp
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.compose.NavHost
@@ -15,37 +16,38 @@ import io.github.thegbguy.barabiseyapp.reminders.RemindersScreen
 import io.github.thegbguy.barabiseyapp.settings.SettingsScreen
 import io.github.thegbguy.barabiseyapp.splash.SplashScreen
 import io.github.thegbguy.barabiseyapp.theme.AppTheme
+import io.github.thegbguy.barabiseyapp.utils.AppInitializer
 import io.github.thegbguy.barabiseyapp.utils.serializableType
 import kotlinx.serialization.Serializable
 import kotlin.reflect.typeOf
 
 @Serializable
-data object Splash
+data object SplashScreen
 
 @Serializable
-data object Login
+data object LoginScreen
 
 @Serializable
-data object Home
+data object HomeScreen
 
 @Serializable
-data class EventDetail(val event: Event) {
+data class EventDetailScreen(val event: Event) {
     companion object {
         val typeMap = mapOf(typeOf<Event>() to serializableType<Event>())
 
         fun from(savedStateHandle: SavedStateHandle) =
-            savedStateHandle.toRoute<EventDetail>(typeMap)
+            savedStateHandle.toRoute<EventDetailScreen>(typeMap)
 
         fun from(navBackStackEntry: NavBackStackEntry) =
-            navBackStackEntry.toRoute<EventDetail>()
+            navBackStackEntry.toRoute<EventDetailScreen>()
     }
 }
 
 @Serializable
-data object Reminders
+data object RemindersScreen
 
 @Serializable
-data object Settings
+data object SettingsScreen
 
 @Composable
 internal fun BarabiseyCommunityApp() {
@@ -54,59 +56,59 @@ internal fun BarabiseyCommunityApp() {
     AppTheme {
         NavHost(
             navController = navController,
-            startDestination = Splash
+            startDestination = SplashScreen
         ) {
-            composable<Splash> {
+            composable<SplashScreen> {
                 SplashScreen {
-                    navController.navigate(Login)
+                    navController.navigate(LoginScreen)
                 }
             }
-            composable<Login> {
+            composable<LoginScreen> {
                 LoginScreen {
-                    navController.navigate(Home)
+                    navController.navigate(HomeScreen)
                 }
             }
-            composable<Home> {
+            composable<HomeScreen> {
                 HomeScreen(
                     onEventClick = { event ->
-                        navController.navigate(EventDetail(event))
+                        navController.navigate(EventDetailScreen(event))
                     },
                     onRemindersClick = {
-                        navController.navigate(Reminders)
+                        navController.navigate(RemindersScreen)
                     },
                     onSettingsClick = {
-                        navController.navigate(Settings)
+                        navController.navigate(SettingsScreen)
                     }
                 )
             }
-            composable<EventDetail>(
-                typeMap = EventDetail.typeMap
+            composable<EventDetailScreen>(
+                typeMap = EventDetailScreen.typeMap
             ) { backstackEntry ->
-                val eventDetail = EventDetail.from(backstackEntry)
+                val eventDetailScreen = EventDetailScreen.from(backstackEntry)
                 EventDetailsScreen(
-                    event = eventDetail.event,
+                    event = eventDetailScreen.event,
                     onBackPressed = {
                         navController.navigateUp()
                     }
                 )
             }
-            composable<Reminders> {
+            composable<RemindersScreen> {
                 RemindersScreen(
                     onHomeClick = {
-                        navController.navigate(Home)
+                        navController.navigate(HomeScreen)
                     },
                     onSettingsClick = {
-                        navController.navigate(Settings)
+                        navController.navigate(SettingsScreen)
                     }
                 )
             }
-            composable<Settings> {
+            composable<SettingsScreen> {
                 SettingsScreen(
                     onRemindersClick = {
-                        navController.navigate(Reminders)
+                        navController.navigate(RemindersScreen)
                     },
                     onHomeClick = {
-                        navController.navigate(Home)
+                        navController.navigate(HomeScreen)
                     }
                 )
             }

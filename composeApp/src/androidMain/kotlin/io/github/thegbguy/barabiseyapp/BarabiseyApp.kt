@@ -4,6 +4,9 @@ import android.app.Application
 import com.mmk.kmpnotifier.notification.NotifierManager
 import com.mmk.kmpnotifier.notification.configuration.NotificationPlatformConfiguration
 import io.github.thegbguy.barabiseyapp.di.androidContext
+import io.github.thegbguy.barabiseyapp.di.androidDbModule
+import io.github.thegbguy.barabiseyapp.di.appModule
+import io.github.thegbguy.barabiseyapp.di.commonDbModule
 import io.github.thegbguy.barabiseyapp.utils.AppInitializer
 import org.koin.core.context.startKoin
 
@@ -13,6 +16,9 @@ class BarabiseyApp : Application() {
 
         startKoin {
             androidContext(this@BarabiseyApp)
+            modules(androidDbModule)
+            modules(commonDbModule)
+            modules(appModule)
         }
 
         AppInitializer.onApplicationStart()

@@ -1,0 +1,21 @@
+import io.github.thegbguy.barabiseyapp.reminders.RepeatInterval;
+
+CREATE TABLE reminders (
+  id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  title TEXT NOT NULL,
+  details TEXT NOT NULL,
+  dateTime TEXT NOT NULL,
+  repeatInterval TEXT AS RepeatInterval
+);
+
+insertReminder:
+INSERT INTO reminders (title, details, dateTime, repeatInterval)
+VALUES (?, ?, ?,  ?);
+
+deleteReminder:
+DELETE FROM reminders
+WHERE id = ?;
+
+getAllReminders:
+SELECT *
+FROM reminders;
