@@ -1,6 +1,8 @@
 # Barabisey App
 A Compose Multiplatform app that helps community members stay informed about events and government notices. Users can receive notifications, add their own reminders, and stay updated with important announcements. 🚀
 
+<img src="https://github.com/user-attachments/assets/3198801a-d7ed-4a83-ad7b-0ccb98f4a68c" width="23%"></img> <img src="https://github.com/user-attachments/assets/a4f9b5cd-ee49-418d-afce-fc7cbea89489" width="23%"></img> <img src="https://github.com/user-attachments/assets/6cbdfb2e-afec-47c1-b054-60bc46159577" width="23%"></img> <img src="https://github.com/user-attachments/assets/3928803f-ca84-4afb-ab38-156314ddacb3" width="23%"></img>
+
 ## Features
 ✅ **Event Notifications** – Receive updates on community events and notices via **FCM**.  
 ✅ **Firebase Authentication** – Sign in using **Google Sign-In**.  
