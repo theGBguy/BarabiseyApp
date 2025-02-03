@@ -30,4 +30,4 @@ If you like this project, please **star** ⭐ this repository and **fork** it if
 For any queries, reach out to me at **<chiran604@gmail.com>**.
 
 ## License
-This project uses the following license: [MIT License](https://github.com/theGBguy/MoviesCMP/blob/main/LICENSE).  
+This project uses the following license: [MIT License](https://github.com/theGBguy/BarabiseyApp/blob/main/LICENSE).  
