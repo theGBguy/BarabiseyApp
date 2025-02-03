@@ -15,3 +15,5 @@ Pods/
 *.jks
 *.gpg
 *yarn.lock
+composeApp/google-services.json
+iosApp/iosApp/GoogleService-Info.plist
